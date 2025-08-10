@@ -114,23 +114,26 @@ export function QueryClient() {
     const { default: jsPDF } = await import('jspdf');
     const doc = new jsPDF();
     
+    // Clean up the report: remove asterisks and trim lines.
+    const cleanedReport = reportData.replace(/\*/g, '').trim();
+
     const margin = 15;
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const usableWidth = pageWidth - margin * 2;
-    const usableHeight = pageHeight - margin * 2;
   
+    doc.setFont('Helvetica', 'normal');
+    
     doc.setFontSize(18);
     doc.text("Reporte de Norma Insights", pageWidth / 2, margin, { align: 'center' });
   
     doc.setFontSize(12);
-    // Split text into lines that fit the page width
-    const textLines = doc.splitTextToSize(reportData, usableWidth);
+    const textLines = doc.splitTextToSize(cleanedReport, usableWidth);
     
-    let cursorY = margin + 20; // Start below the title
+    let cursorY = margin + 20;
   
     textLines.forEach((line: string) => {
-      if (cursorY > usableHeight) {
+      if (cursorY > pageHeight - margin) { // Check if new page is needed
         doc.addPage();
         cursorY = margin;
       }

@@ -18,7 +18,7 @@ const GenerateConsultingReportInputSchema = z.object({
 export type GenerateConsultingReportInput = z.infer<typeof GenerateConsultingReportInputSchema>;
 
 const GenerateConsultingReportOutputSchema = z.object({
-  report: z.string().describe('The comprehensive consulting-style report in Markdown format.'),
+  report: z.string().describe('The comprehensive consulting-style report in clean text format.'),
 });
 export type GenerateConsultingReportOutput = z.infer<typeof GenerateConsultingReportOutputSchema>;
 
@@ -30,19 +30,19 @@ const prompt = ai.definePrompt({
   name: 'generateConsultingReportPrompt',
   input: {schema: GenerateConsultingReportInputSchema},
   output: {schema: GenerateConsultingReportOutputSchema},
-  prompt: `You are an expert consultant specializing in the healthcare regulatory landscape of Colombia and Mexico.
+  prompt: `Eres un consultor experto especializado en el panorama regulatorio de la salud de Colombia y México.
 
-You will receive a complex query related to the regulatory, operational, financial, administrative, human, and technological aspects of the healthcare system.
+Recibirás una consulta compleja relacionada con los aspectos regulatorios, operativos, financieros, administrativos, humanos y tecnológicos del sistema de salud.
 
-Your task is to understand the query, validate its relevance and context, and produce a comprehensive consulting-style report with data support and citations.
+Tu tarea es comprender la consulta, validar su relevancia y contexto, y producir un informe completo de estilo consultoría con datos de respaldo y citas.
 
-The report should emulate the style of reports produced by large consulting firms and research centers. It should be well-structured, data-driven, and properly cited.
+El informe debe emular el estilo de los informes producidos por grandes firmas de consultoría y centros de investigación. Debe estar bien estructurado, basado en datos, con las citas adecuadas y totalmente en español latinoamericano.
 
-The final output should be a well-formatted Markdown document that addresses the query in a thorough and professional manner. The report should be no more than 30 pages and avoid unnecessary filler.
+El resultado final debe ser un documento de texto limpio, bien formateado, que responda a la consulta de manera exhaustiva y profesional. No utilices asteriscos ni ningún tipo de sintaxis de Markdown. Utiliza saltos de línea para separar párrafos y títulos.
 
-Query: {{{query}}}
+Consulta: {{{query}}}
 
-Report (Markdown):`,
+Informe (Texto Limpio):`,
 });
 
 const generateConsultingReportFlow = ai.defineFlow(
