@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { createReport } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -110,15 +111,38 @@ export function QueryClient() {
 
   const downloadReport = () => {
     if (!reportData) return;
-    const blob = new Blob([reportData], { type: 'text/markdown;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = "Norma_Insights_Reporte.md";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
+  
+    const doc = new jsPDF();
+    
+    // Add custom font if needed, though default Helvetica is fine
+    // doc.addFont('Literata-Regular.ttf', 'Literata', 'normal');
+    // doc.setFont('Literata');
+  
+    const margin = 15;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const usableWidth = pageWidth - margin * 2;
+    const usableHeight = pageHeight - margin * 2;
+  
+    doc.setFontSize(18);
+    doc.text("Reporte de Norma Insights", pageWidth / 2, margin, { align: 'center' });
+  
+    doc.setFontSize(12);
+    // Split text into lines that fit the page width
+    const textLines = doc.splitTextToSize(reportData, usableWidth);
+    
+    let cursorY = margin + 20; // Start below the title
+  
+    textLines.forEach((line: string) => {
+      if (cursorY > usableHeight) {
+        doc.addPage();
+        cursorY = margin;
+      }
+      doc.text(line, margin, cursorY);
+      cursorY += 7; // Line height
+    });
+  
+    doc.save("Norma_Insights_Reporte.pdf");
   };
   
   const resetForm = () => {
@@ -157,7 +181,7 @@ export function QueryClient() {
           <CheckCircle2 className="h-16 w-16 text-accent" />
           <Button onClick={downloadReport} size="lg">
             <Download className="mr-2 h-5 w-5" />
-            Descargar Informe
+            Descargar Informe PDF
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
