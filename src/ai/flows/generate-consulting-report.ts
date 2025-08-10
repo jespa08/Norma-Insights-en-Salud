@@ -18,7 +18,7 @@ const GenerateConsultingReportInputSchema = z.object({
 export type GenerateConsultingReportInput = z.infer<typeof GenerateConsultingReportInputSchema>;
 
 const GenerateConsultingReportOutputSchema = z.object({
-  report: z.string().describe('The comprehensive consulting-style report in PDF format (base64 encoded).'),
+  report: z.string().describe('The comprehensive consulting-style report in Markdown format.'),
 });
 export type GenerateConsultingReportOutput = z.infer<typeof GenerateConsultingReportOutputSchema>;
 
@@ -38,11 +38,11 @@ Your task is to understand the query, validate its relevance and context, and pr
 
 The report should emulate the style of reports produced by large consulting firms and research centers. It should be well-structured, data-driven, and properly cited.
 
-The final output should be a PDF document (represented as a base64 encoded string) that addresses the query in a thorough and professional manner. The report should be no more than 30 pages and avoid unnecessary filler.
+The final output should be a well-formatted Markdown document that addresses the query in a thorough and professional manner. The report should be no more than 30 pages and avoid unnecessary filler.
 
 Query: {{{query}}}
 
-Report (PDF as base64 encoded string):`,
+Report (Markdown):`,
 });
 
 const generateConsultingReportFlow = ai.defineFlow(

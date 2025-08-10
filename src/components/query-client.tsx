@@ -108,15 +108,17 @@ export function QueryClient() {
     });
   };
 
-  const downloadPdf = () => {
+  const downloadReport = () => {
     if (!reportData) return;
-    const linkSource = `data:application/pdf;base64,${reportData}`;
+    const blob = new Blob([reportData], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const downloadLink = document.createElement("a");
-    downloadLink.href = linkSource;
-    downloadLink.download = "Norma_Insights_Reporte.pdf";
+    downloadLink.href = url;
+    downloadLink.download = "Norma_Insights_Reporte.md";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
   };
   
   const resetForm = () => {
@@ -153,9 +155,9 @@ export function QueryClient() {
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center space-y-6 py-12">
           <CheckCircle2 className="h-16 w-16 text-accent" />
-          <Button onClick={downloadPdf} size="lg">
+          <Button onClick={downloadReport} size="lg">
             <Download className="mr-2 h-5 w-5" />
-            Descargar Informe en PDF
+            Descargar Informe
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
