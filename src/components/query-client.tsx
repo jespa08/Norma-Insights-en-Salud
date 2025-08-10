@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { createReport } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import type { GenerateConsultingReportOutput } from '@/ai/flows/generate-consulting-report';
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,7 +25,7 @@ const MAX_QUERIES_PER_DAY = 2;
 
 export function QueryClient() {
   const [status, setStatus] = useState<Status>('idle');
-  const [reportData, setReportData] = useState<string | null>(null);
+  const [reportData, setReportData] = useState<GenerateConsultingReportOutput | null>(null);
   const [progress, setProgress] = useState(0);
   const [isPending, startTransition] = useTransition();
   const [dailyCount, setDailyCount] = useState(0);
@@ -40,9 +41,11 @@ export function QueryClient() {
         if (date === today) {
           setDailyCount(count);
         } else {
+          // It's a new day, reset the count.
           localStorage.removeItem('normaInsightsUsage');
         }
       } catch (error) {
+        // Clear corrupted data.
         localStorage.removeItem('normaInsightsUsage');
       }
     }
@@ -90,12 +93,13 @@ export function QueryClient() {
       setProgress(100);
 
       if (result.success && result.data?.report) {
-        setReportData(result.data.report);
+        setReportData(result.data);
         setStatus('success');
         handleUsage();
         toast({
           title: "¡Informe generado con éxito!",
           description: "Su informe está listo para descargar.",
+          variant: 'default'
         });
       } else {
         setStatus('idle');
@@ -105,17 +109,18 @@ export function QueryClient() {
           description: result.error || "Por favor, revise su consulta e intente de nuevo.",
         });
       }
+      setProgress(0);
     });
   };
 
   const downloadReport = async () => {
-    if (!reportData) return;
+    if (!reportData?.report) return;
   
+    // Dynamically import jspdf only on the client-side.
     const { default: jsPDF } = await import('jspdf');
     const doc = new jsPDF();
     
-    // Clean up the report: remove asterisks and trim lines.
-    const cleanedReport = reportData.replace(/\*/g, '').trim();
+    const reportText = reportData.report;
 
     const margin = 15;
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -128,7 +133,7 @@ export function QueryClient() {
     doc.text("Reporte de Norma Insights", pageWidth / 2, margin, { align: 'center' });
   
     doc.setFontSize(12);
-    const textLines = doc.splitTextToSize(cleanedReport, usableWidth);
+    const textLines = doc.splitTextToSize(reportText, usableWidth);
     
     let cursorY = margin + 20;
   
@@ -173,11 +178,11 @@ export function QueryClient() {
     return (
       <Card className="w-full max-w-2xl mx-auto animate-in fade-in-50 shadow-lg">
         <CardHeader className="text-center">
+          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
           <CardTitle className="font-headline text-2xl">¡Su informe está listo!</CardTitle>
           <CardDescription>El informe completo para su consulta ha sido generado.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center space-y-6 py-12">
-          <CheckCircle2 className="h-16 w-16 text-accent" />
           <Button onClick={downloadReport} size="lg">
             <Download className="mr-2 h-5 w-5" />
             Descargar Informe PDF
