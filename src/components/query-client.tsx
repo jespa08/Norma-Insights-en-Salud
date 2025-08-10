@@ -17,7 +17,7 @@ import { Loader2, Download, CheckCircle2, FileText } from 'lucide-react';
 type Status = 'idle' | 'loading' | 'success';
 
 const FormSchema = z.object({
-  query: z.string().min(20, { message: "Please provide a more detailed query (minimum 20 characters)." }).max(1000, { message: "Query is too long (maximum 1000 characters)." }),
+  query: z.string().min(20, { message: "Por favor, proporcione una consulta más detallada (mínimo 20 caracteres)." }).max(1000, { message: "La consulta es demasiado larga (máximo 1000 caracteres)." }),
 });
 
 const MAX_QUERIES_PER_DAY = 2;
@@ -64,8 +64,8 @@ export function QueryClient() {
     if (dailyCount >= MAX_QUERIES_PER_DAY) {
       toast({
         variant: 'destructive',
-        title: 'Daily Limit Reached',
-        description: `You have reached the limit of ${MAX_QUERIES_PER_DAY} queries per day. Please try again tomorrow.`,
+        title: 'Límite diario alcanzado',
+        description: `Ha alcanzado el límite de ${MAX_QUERIES_PER_DAY} consultas por día. Por favor, inténtelo de nuevo mañana.`,
       });
       return;
     }
@@ -94,15 +94,15 @@ export function QueryClient() {
         setStatus('success');
         handleUsage();
         toast({
-          title: "Report Generated Successfully!",
-          description: "Your report is ready for download.",
+          title: "¡Informe generado con éxito!",
+          description: "Su informe está listo para descargar.",
         });
       } else {
         setStatus('idle');
         toast({
           variant: "destructive",
-          title: "Report Generation Failed",
-          description: result.error || "Please check your query and try again.",
+          title: "Falló la generación del informe",
+          description: result.error || "Por favor, revise su consulta e intente de nuevo.",
         });
       }
     });
@@ -113,7 +113,7 @@ export function QueryClient() {
     const linkSource = `data:application/pdf;base64,${reportData}`;
     const downloadLink = document.createElement("a");
     downloadLink.href = linkSource;
-    downloadLink.download = "Norma_Insights_Report.pdf";
+    downloadLink.download = "Norma_Insights_Reporte.pdf";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -132,13 +132,13 @@ export function QueryClient() {
     return (
       <Card className="w-full max-w-2xl mx-auto animate-in fade-in-50 shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="font-headline text-2xl">Generating Your Report</CardTitle>
-          <CardDescription>Our AI is analyzing your query and compiling insights. This may take a moment.</CardDescription>
+          <CardTitle className="font-headline text-2xl">Generando su informe</CardTitle>
+          <CardDescription>Nuestra IA está analizando su consulta y recopilando información. Esto puede tardar un momento.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center space-y-4 py-12">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <Progress value={progress} className="w-full" />
-          <p className="text-sm text-muted-foreground">Please do not close this window.</p>
+          <p className="text-sm text-muted-foreground">Por favor, no cierre esta ventana.</p>
         </CardContent>
       </Card>
     );
@@ -148,18 +148,18 @@ export function QueryClient() {
     return (
       <Card className="w-full max-w-2xl mx-auto animate-in fade-in-50 shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="font-headline text-2xl">Your Report is Ready!</CardTitle>
-          <CardDescription>The comprehensive report for your query has been generated.</CardDescription>
+          <CardTitle className="font-headline text-2xl">¡Su informe está listo!</CardTitle>
+          <CardDescription>El informe completo para su consulta ha sido generado.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center space-y-6 py-12">
           <CheckCircle2 className="h-16 w-16 text-accent" />
           <Button onClick={downloadPdf} size="lg">
             <Download className="mr-2 h-5 w-5" />
-            Download PDF Report
+            Descargar Informe en PDF
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center">
-            <Button variant="outline" onClick={resetForm}>Create Another Report</Button>
+            <Button variant="outline" onClick={resetForm}>Crear otro informe</Button>
         </CardFooter>
       </Card>
     );
@@ -168,9 +168,9 @@ export function QueryClient() {
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline text-xl">Submit Your Query</CardTitle>
+        <CardTitle className="font-headline text-xl">Envíe su consulta</CardTitle>
         <CardDescription>
-          Ask a complex question about the healthcare system in Colombia or Mexico. Our AI will generate a detailed, consulting-style report.
+          Haga una pregunta compleja sobre el sistema de salud en Colombia o México. Nuestra IA generará un informe detallado al estilo de consultoría.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -181,10 +181,10 @@ export function QueryClient() {
               name="query"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Complex Query</FormLabel>
+                  <FormLabel>Su consulta compleja</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="e.g., 'Analyze the financial impact of recent telehealth regulations on private clinics in Bogotá and compare them with the framework in Mexico City...'"
+                      placeholder="Ej: 'Analizar el impacto financiero de las regulaciones recientes de telesalud en las clínicas privadas de Bogotá y compararlas con el marco de la Ciudad de México...'"
                       className="min-h-[150px] font-body text-base"
                       disabled={isPending || isLimitReached}
                       {...field}
@@ -197,11 +197,11 @@ export function QueryClient() {
           </CardContent>
           <CardFooter className="flex justify-between items-center bg-muted/50 p-4 rounded-b-lg">
             <p className="text-sm text-muted-foreground">
-              Queries today: {dailyCount}/{MAX_QUERIES_PER_DAY}
+              Consultas hoy: {dailyCount}/{MAX_QUERIES_PER_DAY}
             </p>
             <Button type="submit" disabled={isPending || isLimitReached}>
               {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" /> }
-              {isPending ? 'Generating...' : 'Generate Report'}
+              {isPending ? 'Generando...' : 'Generar Informe'}
             </Button>
           </CardFooter>
         </form>
