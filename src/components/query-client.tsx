@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { createReport } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import jsPDF from 'jspdf';
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -109,15 +108,12 @@ export function QueryClient() {
     });
   };
 
-  const downloadReport = () => {
+  const downloadReport = async () => {
     if (!reportData) return;
   
+    const { default: jsPDF } = await import('jspdf');
     const doc = new jsPDF();
     
-    // Add custom font if needed, though default Helvetica is fine
-    // doc.addFont('Literata-Regular.ttf', 'Literata', 'normal');
-    // doc.setFont('Literata');
-  
     const margin = 15;
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
