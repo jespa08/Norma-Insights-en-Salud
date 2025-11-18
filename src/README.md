@@ -42,55 +42,11 @@ A continuación, se describen los archivos y directorios más importantes:
 -   `apphosting.yaml`: Archivo de configuración para el despliegue en Firebase App Hosting.
 -   `package.json`: Dependencias y scripts del proyecto.
 
----
-
-## Cómo Compartir y Colaborar
-
-Para descargar (clonar) este proyecto o colaborar con otras personas, primero debes subir el código a un servicio de hosting de Git como [GitHub](https://github.com/), [GitLab](https://gitlab.com/) o [Bitbucket](https://bitbucket.org/).
-
-### 1. Sube tu proyecto a GitHub
-
-Sigue estos pasos desde la terminal de tu computadora, dentro de la carpeta del proyecto.
-
-a. **Inicializa Git en tu proyecto local** (si no lo has hecho):
-    ```bash
-    git init -b main
-    git add .
-    git commit -m "Versión inicial del proyecto Norma Insights"
-    ```
-b. **Conecta tu repositorio local con el remoto** (la URL que proporcionaste):
-    ```bash
-    git remote add origin https://github.com/jespa08/Norma-Insights-en-Salud.git
-    ```
-c. **Sube el código a GitHub**:
-    ```bash
-    git push -u origin main
-    ```
-Ahora tu código estará en línea en la URL que especificaste.
-
-### 2. Cómo otras personas pueden clonar el repositorio
-
-Una vez que el proyecto esté en GitHub, cualquier persona puede clonarlo con el siguiente comando:
-
-```bash
-git clone https://github.com/jespa08/Norma-Insights-en-Salud.git
-cd Norma-Insights-en-Salud
-```
-
-Después de clonar, pueden seguir las instrucciones de "Puesta en Marcha Local".
-
----
-
 ## Puesta en Marcha Local
 
 Para ejecutar el proyecto en una máquina local, sigue estos pasos:
 
-1.  **Clona el repositorio:**
-    ```bash
-    # Reemplaza la URL con la de tu propio repositorio en GitHub/GitLab
-    git clone https://github.com/jespa08/Norma-Insights-en-Salud.git
-    cd Norma-Insights-en-Salud
-    ```
+1.  **Descarga el código del proyecto.**
 
 2.  **Instala las dependencias:**
     ```bash

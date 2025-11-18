@@ -42,54 +42,11 @@ A continuación, se describen los archivos y directorios más importantes:
 -   `apphosting.yaml`: Archivo de configuración para el despliegue en Firebase App Hosting.
 -   `package.json`: Dependencias y scripts del proyecto.
 
----
-
-## Cómo Compartir y Colaborar
-
-Para descargar (clonar) este proyecto o colaborar con otras personas, primero debes subir el código a un servicio de hosting de Git como [GitHub](https://github.com/), [GitLab](https://gitlab.com/) o [Bitbucket](https://bitbucket.org/).
-
-### 1. Sube tu proyecto a GitHub (o similar)
-
-Si aún no lo has hecho, sigue estos pasos desde tu computadora:
-
-a. **Crea un nuevo repositorio** en GitHub. No lo inicialices con un `README` o `.gitignore`, ya que el proyecto ya los tiene.
-b. **Inicializa Git en tu proyecto local** (si no lo has hecho):
-    ```bash
-    git init
-    git add .
-    git commit -m "Versión inicial del proyecto Norma Insights"
-    ```
-c. **Conecta tu repositorio local con el remoto** (la URL que te da GitHub):
-    ```bash
-    git remote add origin <URL_DEL_REPOSITORIO_EN_GITHUB>
-    git branch -M main
-    git push -u origin main
-    ```
-Ahora tu código está en línea.
-
-### 2. Cómo otras personas pueden clonar el repositorio
-
-Una vez que el proyecto esté en GitHub, cualquier persona con acceso puede clonarlo. Deberán tener [Git](https://git-scm.com/downloads) instalado en su computadora y ejecutar el siguiente comando en su terminal:
-
-```bash
-git clone <URL_DEL_REPOSITORIO_EN_GITHUB>
-cd norma-insights # O el nombre de la carpeta del proyecto
-```
-
-Después de clonar, pueden seguir las instrucciones de "Puesta en Marcha Local".
-
----
-
 ## Puesta en Marcha Local
 
 Para ejecutar el proyecto en una máquina local, sigue estos pasos:
 
-1.  **Clona el repositorio:**
-    ```bash
-    # Reemplaza la URL con la de tu propio repositorio en GitHub/GitLab
-    git clone <URL_DEL_REPOSITORIO>
-    cd <NOMBRE_DEL_PROYECTO>
-    ```
+1.  **Descarga el código del proyecto.**
 
 2.  **Instala las dependencias:**
     ```bash
